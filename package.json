@@ -31,7 +31,10 @@
     "sinon-chai": "^2.11.0"
   },
   "dependencies": {
-    "meshblu-connector-cli": "^1.1.6"
+    "debug": "^2.6.8",
+    "lodash": "^4.17.4",
+    "meshblu-connector-cli": "^1.1.6",
+    "tmp": "^0.0.31"
   },
   "meshbluConnector": {
     "githubSlug": "octoblu/meshblu-connector-storefront-ica"

@@ -5,7 +5,23 @@ module.exports = {
     options: {
       title: "Options",
       type: "object",
-      properties: {}
+      properties: {
+        storeFrontUrl: {
+          type: "string",
+        },
+        domain: {
+          type: "string",
+        },
+        username: {
+          type: "string",
+        },
+        password: {
+          type: "string",
+        },
+        desktop: {
+          type: "string"
+        }
+      }
     }
   }
 }
