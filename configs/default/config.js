@@ -19,9 +19,10 @@ module.exports = {
           type: "string",
         },
         desktop: {
-          type: "string"
-        }
-      }
-    }
-  }
+          type: "string",
+        },
+      },
+      required: ["storeFrontUrl", "domain", "desktop"],
+    },
+  },
 }
