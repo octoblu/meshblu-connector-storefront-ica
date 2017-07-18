@@ -152,7 +152,8 @@ if ($foundResource.count) {
   }
   Write-Host "No matching desktop found. Choose from any of the above desktops" -Foregroundcolor Red
 } else {
-  Write-Host "Matched Resource: $foundResource.name"
+  $resourceName = $foundResource.name
+  Write-Host "Matched Resource: $resourceName"
   $launchUrl = $sfurl + $foundResource.launchurl + '?CsrfToken=' + $csrf.value + "&IsUsingHttps=Yes"
   Write-Host "Launch URL $launchUrl"
   Invoke-WebRequest -Uri ($launchUrl) -Method GET -WebSession $SFSession -OutFile $icapath|Out-Null
