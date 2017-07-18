@@ -30,7 +30,7 @@ Param
   [Parameter(Mandatory=$true)]$domain
 
 )
-CLS
+#CLS
 write-host "Requesting ICA file. Please Wait..." -ForegroundColor Yellow
 
 #Remove old ica file if found
