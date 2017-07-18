@@ -141,7 +141,6 @@ $content = Invoke-WebRequest -Uri ($sfurl + "Resources/List") -Method POST -Head
 $resources = $content.content | convertfrom-json
 $foundResource = $resources.resources|where{$_.name -like "$desktop" -and $_.type -eq "Citrix.MPS.Desktop"}
 
-
 if ($foundResource.count) {
   write-host "MULTIPLE APPS FOUND for $desktop.  Check APP NAME!" -ForegroundColor Red
   $foundResource|select id,name
@@ -151,7 +150,7 @@ if ($foundResource.count) {
     Write-Host "$resourceName"
   }
   Write-Host "No matching desktop found. Choose from any of the above desktops" -Foregroundcolor Red
-} else {
+} elseif($foundResource -ne $Null) {
   $resourceName = $foundResource.name
   Write-Host "Matched Resource: $resourceName"
   $launchUrl = $sfurl + $foundResource.launchurl + '?CsrfToken=' + $csrf.value + "&IsUsingHttps=Yes"
@@ -166,4 +165,6 @@ if ($foundResource.count) {
   {
     write-host "ICA not found check configuration"
   }
+} else {
+  Write-Host "No resources found." -ForegroundColor Red
 }

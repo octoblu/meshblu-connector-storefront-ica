@@ -169,7 +169,7 @@ if ($foundResource.count) {
     Write-Host "$resourceName"
   }
   Write-Host "No matching desktop found. Choose from any of the above desktops" -Foregroundcolor Red
-} else {
+} elseif($foundResource -ne $Null) {
   $resourceName = $foundResource.name
   Write-Host "Matched Resource: $resourceName"
   $launchUrl = $sfurl + $foundResource.launchurl + '?CsrfToken=' + $csrf.value + "&IsUsingHttps=Yes"
@@ -184,4 +184,6 @@ if ($foundResource.count) {
   {
     write-host "ICA not found check configuration"
   }
+} else {
+  Write-Host "No resources found." -ForegroundColor Red
 }
