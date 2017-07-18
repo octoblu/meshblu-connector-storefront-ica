@@ -1,0 +1,72 @@
+{
+  "name": "meshblu-connector-storefront-ica",
+  "version": "4.0.6",
+  "description": "Meshblu Connector StoreFront ICA",
+  "homepage": "https://github.com/octoblu/meshblu-connector-storefront-ica",
+  "bugs": "https://github.com/octoblu/meshblu-connector-storefront-ica/issues",
+  "author": {
+    "name": "Octoblu",
+    "url": "https://github.com/octoblu"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/octoblu/meshblu-connector-storefront-ica.git"
+  },
+  "scripts": {
+    "start": "meshblu-connector",
+    "test": "mocha",
+    "coverage": "nyc npm test",
+    "mocha:json": "env NPM_ENV=test mocha --reporter json > coverage/mocha.json",
+    "test:watch": "mocha -w -R mocha-multi --reporter-options spec=-,mocha-osx-reporter=-"
+  },
+  "bin": "command.js",
+  "devDependencies": {
+    "chai": "^4.0.2",
+    "mocha": "^3.4.2",
+    "mocha-multi": "^0.11.0",
+    "mocha-osx-reporter": "^0.1.2",
+    "nyc": "^11.0.2",
+    "sinon": "^2.3.5",
+    "sinon-chai": "^2.11.0"
+  },
+  "dependencies": {
+    "meshblu-connector-cli": "^1.1.6"
+  },
+  "meshbluConnector": {
+    "githubSlug": "octoblu/meshblu-connector-storefront-ica"
+  },
+  "platformDependencies": {
+    "darwin": [],
+    "win32": [],
+    "win64": [],
+    "linux": [],
+    "android": null,
+    "ios": null
+  },
+  "license": "MIT",
+  "keywords": [
+    "meshblu-connector",
+    "gateblu"
+  ],
+  "nyc": {
+    "cache": true,
+    "reporter": [
+      "text-summary",
+      "lcov",
+      "json"
+    ],
+    "extension": [
+      ".coffee"
+    ]
+  },
+  "pkg": {
+    "scripts": [
+      "package.json",
+      "index.js",
+      "src/*.js",
+      "jobs/**/*.js",
+      "configs/**/*.js"
+    ]
+  }
+}
