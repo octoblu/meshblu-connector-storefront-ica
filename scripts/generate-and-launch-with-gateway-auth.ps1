@@ -24,8 +24,12 @@ Param
   [Parameter(Mandatory=$true)]$domain
 
 )
-#CLS
+CLS
 write-host "Requesting ICA file. Please Wait..." -ForegroundColor Yellow
+write-host "sfurl: $sfurl"
+write-host "desktop: $desktop"
+write-host "icapath: $icapath"
+write-host "domain: $domain"
 
 #Remove old ica file if found
 if (test-path $icapath)
