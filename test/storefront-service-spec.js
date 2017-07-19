@@ -17,6 +17,10 @@ describe('StoreFrontService', function() {
     })
     this.sut = new StoreFrontService({
       storeFrontUrl: this.storeFrontUrl,
+      domain: 'some-domain',
+      username: 'some-username',
+      password: 'some-password',
+      desktop: 'some-desktop-name',
     })
   })
 
@@ -29,7 +33,95 @@ describe('StoreFrontService', function() {
       this.loadMainPage = this.storeFrontServer.get('/Citrix/StoreWeb')
         .set('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8')
         .set('Upgrade-Insecure-Requests', '1')
+        .reply(200, {}, {
+          'Set-Cookie': 'Csrf-Token=some-csrf-token'
+        })
+
+      this.homeConfiguration = this.storeFrontServer.post('/Citrix/StoreWeb/Home/Configuration')
+        .set('Accept', 'application/xml, text/xml, */*; q=0.01')
+        .set('X-Requested-With', 'XMLHttpRequest')
+        .set('X-Citrix-IsUsingHTTPS', 'Yes')
+        .set('Referer', this.storeFrontUrl)
+        .set('Content-Length', '0')
+        .reply(200, {}, {
+          'Set-Cookie': 'Csrf-Token=some-csrf-token'
+        })
+
+      this.checkResources = this.storeFrontServer.post('/Citrix/StoreWeb/Resources/List')
+        .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+        .set('Accept', 'application/json, text/javascript, */*; q=0.01')
+        .set('X-Citrix-IsUsingHTTPS', "Yes")
+        .set('Csrf-Token', 'some-csrf-token')
+        .set('format', 'json&resourceDetails=Full')
+        .set('Referer', this.storeFrontUrl)
+        .send({
+          format: 'json',
+          resourceDetails: 'Full',
+        })
         .reply(200)
+
+      this.getAuthMethods = this.storeFrontServer.post('/Citrix/StoreWeb/Authentication/GetAuthMethods')
+        .set('Accept', 'application/xml, text/xml, */*; q=0.01')
+        .set('X-Citrix-IsUsingHTTPS', "Yes")
+        .set('Csrf-Token', 'some-csrf-token')
+        .set('Referer', this.storeFrontUrl)
+        .set('Content-Length', '0')
+        .reply(200)
+
+      this.explicitLogin = this.storeFrontServer.post('/Citrix/StoreWeb/ExplicitAuth/Login')
+        .set('Accept', 'application/xml, text/xml, */*; q=0.01')
+        .set('X-Citrix-IsUsingHTTPS', "Yes")
+        .set('Csrf-Token', 'some-csrf-token')
+        .set('Content-Length', '0')
+        .reply(200)
+
+      this.explicitLoginAttempt = this.storeFrontServer.post('/Citrix/StoreWeb/ExplicitAuth/LoginAttempt')
+        .set('Accept', 'application/xml, text/xml, */*; q=0.01')
+        .set('Accept-Encoding', 'gzip, deflate, br')
+        .set('Accept-Language', 'en-US,en;q=0.8')
+        .set('X-Requested-With', 'XMLHttpRequest')
+        .send({
+          domain: 'some-domain',
+          loginBtn: 'Log On',
+          password: 'some-password',
+          saveCredentials: "false",
+          username: 'some-username',
+          StateContext: '',
+        })
+        .reply(200)
+
+      const launchurl = url.format({
+        pathname: '/some-launch-id.ica',
+        port: this.storeFrontServer.address().port,
+        protocol: 'http',
+        hostname: 'localhost',
+      })
+
+      this.listResources = this.storeFrontServer.post('/Citrix/StoreWeb/Resources/List')
+        .set('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8')
+        .set('Accept', 'application/json, text/javascript, */*; q=0.01')
+        .set('X-Citrix-IsUsingHTTPS', "Yes")
+        .set('Csrf-Token', 'some-csrf-token')
+        .set('format', 'json&resourceDetails=Full')
+        .set('Referer', this.storeFrontUrl)
+        .send({
+          format: 'json',
+          resourceDetails: 'Full',
+        })
+        .reply(200, {
+          resources: [
+            { name: 'some-desktop-name', type: 'Citrix.MPS.Desktop', launchurl: launchurl },
+            { name: 'some-desktop-name', type: 'Citrix.MPS.Application', launchurl: 'wrong' },
+            { name: 'some-other-name', type: 'Citrix.MPS.Desktop', launchurl: 'wrong' },
+          ]
+        })
+
+      this.getICAFileContents = this.storeFrontServer.get('/some-launch-id.ica')
+        .query({
+          CsrfToken: 'some-csrf-token',
+          IsUsingHttps: 'Yes',
+        })
+        .reply(200, 'some-ica-file-content')
 
       this.sut.generateICA((error, icaContents) => {
         if (error) {
@@ -39,12 +131,41 @@ describe('StoreFrontService', function() {
         done()
       })
     })
+
     it('should yeild ICA contents', function () {
-      expect(this.icaContents).to.deep.equal('hello')
+      expect(this.icaContents).to.deep.equal('some-ica-file-content')
     })
 
     it('should call load main page', function () {
       this.loadMainPage.done()
+    })
+
+    it('should call home configuration', function () {
+      this.homeConfiguration.done()
+    })
+
+    it('should check list resources', function () {
+      this.checkResources.done()
+    })
+
+    it('should call get auth methods', function () {
+      this.getAuthMethods.done()
+    })
+
+    it('should call explicit login', function () {
+      this.explicitLogin.done()
+    })
+
+    it('should attempt to login', function () {
+      this.explicitLoginAttempt.done()
+    })
+
+    it('should really get the resources', function () {
+      this.listResources.done()
+    })
+
+    it('should get the ica file contents', function() {
+      this.getICAFileContents.done()
     })
   })
 })
