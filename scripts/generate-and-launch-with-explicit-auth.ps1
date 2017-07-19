@@ -136,7 +136,6 @@ $body = @{
   "StateContext"="";
 }
 
-
 $login = Invoke-WebRequest -Uri ($sfurl + "ExplicitAuth/LoginAttempt") -Method POST -Headers $headers -Body $body -WebSession $SFSession
 
 #Gets resources and required ICA URL

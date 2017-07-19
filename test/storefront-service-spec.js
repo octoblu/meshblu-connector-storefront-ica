@@ -34,7 +34,7 @@ describe('StoreFrontService', function() {
         .set('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8')
         .set('Upgrade-Insecure-Requests', '1')
         .reply(200, {}, {
-          'Set-Cookie': 'Csrf-Token=some-csrf-token'
+          'Set-Cookie': 'CsrfToken=some-csrf-token'
         })
 
       this.homeConfiguration = this.storeFrontServer.post('/Citrix/StoreWeb/Home/Configuration')
@@ -44,7 +44,7 @@ describe('StoreFrontService', function() {
         .set('Referer', this.storeFrontUrl)
         .set('Content-Length', '0')
         .reply(200, {}, {
-          'Set-Cookie': 'Csrf-Token=some-csrf-token'
+          'Set-Cookie': 'CsrfToken=some-csrf-token'
         })
 
       this.checkResources = this.storeFrontServer.post('/Citrix/StoreWeb/Resources/List')
