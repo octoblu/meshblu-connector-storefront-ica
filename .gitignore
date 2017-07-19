@@ -33,3 +33,4 @@ schemas.json
 bin
 pkg-config.json
 data.json
+test-it-local.js

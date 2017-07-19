@@ -37,10 +37,12 @@
   "dependencies": {
     "async": "^2.5.0",
     "debug": "^2.6.8",
+    "fs-extra": "^4.0.0",
     "lodash": "^4.17.4",
     "meshblu-connector-cli": "^1.1.6",
     "request": "^2.81.0",
-    "tmp": "^0.0.31"
+    "tmp": "^0.0.31",
+    "tough-cookie": "^2.3.2"
   },
   "meshbluConnector": {
     "githubSlug": "octoblu/meshblu-connector-storefront-ica"
